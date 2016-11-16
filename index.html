@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Free Web tutorials">
+	<meta name="keywords" content="HTML,CSS,XML,JavaScript,Angular">
+	<meta name="author" content="Datofa">
+	<title>Form Builder With Angular JS</title>
+	<link rel="stylesheet" type="text/css" href="../../bower/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="https://htmlstream.com/preview/unify-v1.9.6/assets/css/app.css">
+	<!-- <script src="js/jquery.min.js"></script> -->
+</head>
+<body ng-app="MyFormApp">
+	<div class="wrapper">
+		<div class="header">
+			<div class="container" ng-controller="MyFormController">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-blue margin-bottom-40">
+							<div class="panel-heading">
+								<h3 class="panel-title"><i class="fa fa-tasks"></i> Basic Form</h3>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12 text-center">
+								  		<h2>Angular Form Builder</h2>		  		
+								  	</div>
+								  	<div class="col-md-12">
+								  		<div class="form-group">
+									  		<label for="title">Form Title</label>
+									  		<input type="text" name="title" id="title" class="form-control" placeholder="Form Title">
+									  	</div>
+									  	<div class="form-group">
+									  		<label for="title">Info</label>
+									  		<input type="text" name="title" id="title" class="form-control" placeholder="Form Info">
+									  	</div>
+									  	<div class="form-group">
+								  			<button class="btn btn-default" ng-repeat="inputElement in inputElements">
+								  				<i class="fa fa-plus"></i>{{ inputElement.type }}
+								  			</button>
+								  		</div>
+								  	</div>
+								  	<div class="col-md-12">
+								  		<div id="FormBuilder" ng-repeat="inputForm in inputForms">
+											<div class="row">
+												<div class="form-group col-md-12 b-form forminput">
+													<label for="{{inputForm.name}}">{{inputForm.label}}</label>
+													<div ng-if="inputForm.type=='text'">
+														<input type="text" name="{{inputForm.name}}" value="{{inputForm.value}}" class="form-control">
+													</div>
+													<!-- <div ng-if="inputForm.type=='radio'" ng-repeat="option in inputForm.options">
+														<input type="radio" name="{{inputForm.name}}" value="option.value"> {{option.option}}
+													</div> -->
+													<div ng-if="inputForm.type=='checkbox'">													
+														<input type="text" name="{{inputForm.name}}" class="form-control">
+													</div>
+													<div ng-if="inputForm.type=='file'">
+														<input type="file" name="{{inputForm.name}}" ng-repeat="inputForm.option in inputForms">			
+													</div>
+													<a href="#" data-toggle="tooltip" title="">{{inputForm.hint}}</a>
+													<div class="pull-right">
+														<button class="btn btn-info" ng-click="inputForm.open=true" ng-if="inputForm.open==false">Edit</button>
+														<button class="btn btn-info" ng-click="inputForm.open=false" ng-if="inputForm.open==true">Save</button>
+														<!-- <button class="btn btn-danger" ng-click="deleteElement('a')">delete</button> -->
+													</div>
+												</div>
+												<div class="col-md-12" ng-show="inputForm.open">
+													<div class="row">
+														<div class="col-md-12 form-group">
+															<label>Label</label>
+															<input type="text" ng-model="inputForm.label" class="form-control">
+														</div>
+														<div class="col-md-12 form-group">
+															<label>Type</label>
+															<select ng-model="inputForm.type">
+																<option ng-repeat="inputElement in inputElements" value="{{inputElement.type}}">{{inputElement.name}}</option>
+															</select>
+														</div>
+														<div class="col-md-12 form-group">
+															<label>name</label>
+															<input type="text" ng-model="inputForm.name" class="form-control">
+														</div>
+														<div class="col-md-12 form-group">
+															<label>value</label>
+															<input type="text" ng-model="inputForm.value" class="form-control">
+														</div>
+														<div class="col-md-12 form-group">
+															<label>hint</label>
+															<input type="text" ng-model="inputForm.hint" class="form-control">
+														</div>
+														<div class="col-md-12 form-group">
+															<label>options</label>
+															<div class="form-group" ng-repeat="option in inputForm.options">
+																<input type="text" ng-model="option.value" class="form-control">
+																<input type="text" ng-model="option.option" class="form-control">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+								  	</div>
+								  	<div class="col-md-12">
+								  		<button type="button" class="btn btn-primary">Save</button>
+										<button class="btn btn-primary">Show Json</button>
+										<button class="btn btn-danger">Reset</button>
+								  	</div>
+								  	<div class="col-md-12">
+								  		<textarea class="form-control" style="height:300px">{{inputForms || JSON}}</textarea>
+								  	</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="js/angular.min.js"></script>
+<script src="../../bower/bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script src="../../bower/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../../bower/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	var app = angular.module('MyFormApp', []);
+	app.controller('MyFormController', function($scope){
+		$scope.inputForms = [
+			{	
+				id 			: 1,
+				label 		: "1. My father is so tired since he … our garden all day for planting vegetables",
+				hint 		: "hint",
+				type  		: "radio",
+				name  		: "name",
+				value  		: "value",
+				readonly	: true,
+				disable		: true,
+				max 		: 20,
+				min 		: 10,
+				options		: [
+							{
+								id 		: 1,
+								option 	: "option 1",
+								value	: 1
+							},
+							{
+								id 		: 2,
+								option 	: "option 2",
+								value	: 2
+							},
+							{
+								id 		: 3,
+								option 	: "option 3",
+								value	: 3
+							},
+							{
+								id 		: 4,
+								option 	: "option 4",
+								value	: 4
+							}
+						],
+				open 	: false
+			},
+			{
+				id 			: 2,
+				label 		: "2. At this time yesterday Reny and I … our classmate.",
+				hint 		: "hint",
+				type  		: "password",
+				name  		: "name",
+				value  		: "value",
+				readonly	: true,
+				disable		: true,
+				open 		: false
+			},
+			{
+				id  		: 3,
+				label 		: "3. We sometimes … by chance in the convenience store.",
+				hint  		: "hint",
+				type  		: "file",
+				name  		: "name",
+				value  		: "value",
+				readonly	: true,
+				disable		: true,
+				open 		: false
+
+			}
+		];
+
+		$scope.inputElements = [
+			{	
+				id 		: 1,
+				name	: "Essai",
+				type 	: "input",
+			},
+			{
+				id 		: 2,
+				name	: "Check",
+				type 	: "radio",
+			},
+			{
+				id 		: 2,
+				name	: "Multiple Check",
+				type 	: "checkbox",
+			},
+			{
+				id 		: 3,
+				name	: "Date",
+				type 	: "date",
+			},
+			{
+				id 		: 3,
+				name	: "Upload File",
+				type 	: "file",
+			},
+			{
+				id 		: 4,
+				name	: "Large Essai",
+				type 	: "textarea",
+			}
+		];
+	});
+	// angular.module('myModule', ['ui.bootstrap']);
+	// function deleteElement(array, id) {
+	// 	alert("oke");
+	// 	// return "oke";
+ //    };
+</script>
+</html>
